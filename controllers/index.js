@@ -66,13 +66,14 @@ exports.expenseById = async (req, res, next) => {
   }
 };
 
-exports.expenseByDate = async (req, res, next, date) => {
+exports.expenseByDate = async (req, res, next) => {
+  const expenseDate = Number(req.parmas.expenseDate);
   try {
     const expenseQuery = await pool.query(
       'SELECT * FROM expenses WHERE created_at BETWEEN $1 AND $2',
       [
-        startOfDay(new Date(Number(date))).toISOString(),
-        endOfDay(new Date(Number(date))).toISOString(),
+        startOfDay(new Date(expenseDate)).toISOString(),
+        endOfDay(new Date(expenseDate)).toISOString(),
       ]
     );
     const expenseList = expenseQuery.rows;
